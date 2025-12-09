@@ -1,24 +1,23 @@
-vCard - Personal Portfolio
+Ayush Singh
 
 # sidebar
 
-alt = Richard hanrick
-Richard hanrick
-Web developer
+alt = Ayush Singh
+Ayush Singh
+Blockchain Developer
 
 Show Contacts
 
 Email
-richard@example.com
+ayushsinghmi713@gmail.com
 
 Phone
-+1 (213) 352-2795
++91 9870984038
 
-Birthday
-June 23, 1982
+
 
 Location
-Sacramento, California, USA
+Business Bay Dubai
 
 # navbar
 
@@ -32,7 +31,7 @@ Contact
 
 About me
 
-I'm Creative Director and UI/UX Designer from Sydney, Australia, working in web development and print media. I enjoy turning complex problems into simple, beautiful and intuitive designs.
+I'm a Full-Stack Blockchain Developer , won 20+ global web3 hackathons  . I enjoy bringing the world onchain .
 
 My job is to build your website so that it is functional and user-friendly but at the same time attractive. Moreover, I add personal touch to your product and make sure that is eye-catching and easy to use. My aim is to bring across your message and identity in the most creative way. I created web design for many famous brand companies.
 
