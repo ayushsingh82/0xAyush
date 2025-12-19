@@ -1,6 +1,7 @@
 'use strict';
 
-
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
 
 // element toggle function
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
@@ -12,11 +13,13 @@ const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 
 // sidebar toggle functionality for mobile
-sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
+if (sidebarBtn && sidebar) {
+  sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
+}
 
 
 
-// testimonials variables
+// testimonials variables (only if they exist)
 const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
 const modalContainer = document.querySelector("[data-modal-container]");
 const modalCloseBtn = document.querySelector("[data-modal-close-btn]");
@@ -28,30 +31,32 @@ const modalTitle = document.querySelector("[data-modal-title]");
 const modalText = document.querySelector("[data-modal-text]");
 
 // modal toggle function
-const testimonialsModalFunc = function () {
-  modalContainer.classList.toggle("active");
-  overlay.classList.toggle("active");
+if (modalContainer && overlay) {
+  const testimonialsModalFunc = function () {
+    modalContainer.classList.toggle("active");
+    overlay.classList.toggle("active");
+  }
+
+  // add click event to all modal items
+  for (let i = 0; i < testimonialsItem.length; i++) {
+
+    testimonialsItem[i].addEventListener("click", function () {
+
+      if (modalImg) modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
+      if (modalImg) modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
+      if (modalTitle) modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
+      if (modalText) modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
+
+      testimonialsModalFunc();
+
+    });
+
+  }
+
+  // add click event to modal close button
+  if (modalCloseBtn) modalCloseBtn.addEventListener("click", testimonialsModalFunc);
+  if (overlay) overlay.addEventListener("click", testimonialsModalFunc);
 }
-
-// add click event to all modal items
-for (let i = 0; i < testimonialsItem.length; i++) {
-
-  testimonialsItem[i].addEventListener("click", function () {
-
-    modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
-    modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
-    modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
-    modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
-
-    testimonialsModalFunc();
-
-  });
-
-}
-
-// add click event to modal close button
-modalCloseBtn.addEventListener("click", testimonialsModalFunc);
-overlay.addEventListener("click", testimonialsModalFunc);
 
 
 
@@ -61,7 +66,9 @@ const selectItems = document.querySelectorAll("[data-select-item]");
 const selectValue = document.querySelector("[data-selecct-value]");
 const filterBtn = document.querySelectorAll("[data-filter-btn]");
 
-select.addEventListener("click", function () { elementToggleFunc(this); });
+if (select) {
+  select.addEventListener("click", function () { elementToggleFunc(this); });
+}
 
 // add event in all select items
 for (let i = 0; i < selectItems.length; i++) {
@@ -121,17 +128,19 @@ const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
 
 // add event to all form input field
-for (let i = 0; i < formInputs.length; i++) {
-  formInputs[i].addEventListener("input", function () {
+if (form && formBtn) {
+  for (let i = 0; i < formInputs.length; i++) {
+    formInputs[i].addEventListener("input", function () {
 
-    // check form validation
-    if (form.checkValidity()) {
-      formBtn.removeAttribute("disabled");
-    } else {
-      formBtn.setAttribute("disabled", "");
-    }
+      // check form validation
+      if (form.checkValidity()) {
+        formBtn.removeAttribute("disabled");
+      } else {
+        formBtn.setAttribute("disabled", "");
+      }
 
-  });
+    });
+  }
 }
 
 
@@ -141,19 +150,43 @@ const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
 
 // add event to all nav link
-for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
+if (navigationLinks.length > 0 && pages.length > 0) {
+  for (let i = 0; i < navigationLinks.length; i++) {
+    navigationLinks[i].addEventListener("click", function (e) {
+      e.preventDefault();
 
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
+      // Remove active class from all pages and navigation links
+      for (let j = 0; j < pages.length; j++) {
+        pages[j].classList.remove("active");
       }
-    }
+      for (let j = 0; j < navigationLinks.length; j++) {
+        navigationLinks[j].classList.remove("active");
+      }
 
-  });
+      // Add active class to clicked navigation link
+      this.classList.add("active");
+
+      // Find and activate the matching page
+      const clickedPage = this.textContent.toLowerCase().trim();
+      let pageFound = false;
+      
+      for (let j = 0; j < pages.length; j++) {
+        if (clickedPage === pages[j].dataset.page) {
+          pages[j].classList.add("active");
+          pageFound = true;
+          window.scrollTo(0, 0);
+          break;
+        }
+      }
+      
+      // Debug: log if page not found
+      if (!pageFound) {
+        console.log("Page not found for:", clickedPage);
+        console.log("Available pages:", Array.from(pages).map(p => p.dataset.page));
+      }
+
+    });
+  }
 }
+
+}); // End of DOMContentLoaded
